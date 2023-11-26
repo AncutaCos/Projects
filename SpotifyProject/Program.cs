@@ -19,7 +19,7 @@ class MusicApp
 
     public MusicApp()
     {
-        // Inizializzazione degli artisti e delle loro canzoni
+        
         // Inizializzazione degli artisti e delle loro canzoni
         artists = new List<Artist>
 {
@@ -253,7 +253,6 @@ class MusicApp
                     Album selectedAlbum = GetAlbumByIndex(selectedAlbumIndex);
                     DisplaySongs(selectedAlbum);
 
-                    // Implementa la riproduzione
                     PlaySongs(selectedAlbum.Songs);
                 }
                 Console.ResetColor();
@@ -454,7 +453,7 @@ class MusicApp
         while (true)
         {
             char key = Console.ReadKey().KeyChar;
-            Console.WriteLine();  // Vai a capo dopo la lettura del tasto
+            Console.WriteLine();  
 
             switch (key)
             {
@@ -494,7 +493,7 @@ class MusicApp
 class Artist
 {
     public string Name { get; set; }
-    public string Genre { get; set; } // Nuovo campo per il genere
+    public string Genre { get; set; } 
     public List<Album> Albums { get; set; }
 
     public Artist(string name, string genre, List<Album> albums)
@@ -508,7 +507,7 @@ class Artist
 class Album
 {
     public string Title { get; set; }
-    public string Genre { get; set; } // Nuovo campo per il genere
+    public string Genre { get; set; }
     public List<Song> Songs { get; set; }
 
     public Album(string title, string genre, List<Song> songs)
@@ -523,7 +522,7 @@ class Song
 {
     public string Title { get; set; }
     public string Genre { get; set; }
-    public int PlayCount { get; private set; } // Nuovo campo per il conteggio delle riproduzioni
+    public int PlayCount { get; private set; } //  campo per il conteggio delle riproduzioni
 
     public Song(string title, string genre)
     {
