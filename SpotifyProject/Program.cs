@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+
 class Program
 {
     static void Main()
@@ -12,8 +13,147 @@ class Program
 
 }
 
+
+class Profile
+{
+    public string Username { get; set; }
+    public List<Playlist> Playlists { get; set; }
+    public int TotalListeningHours { get; set; }
+
+    public Profile(string username)
+    {
+        Username = username;
+        Playlists = new List<Playlist>();
+        TotalListeningHours = 0;
+    }
+
+}
+
+
 class MusicApp
 {
+    private Profile userProfile;
+
+    public void Run()
+    {
+        Console.WriteLine("Benvenuto su Spotify-like Console App!");
+
+        while (true)
+        {
+            Console.WriteLine("\nPer iniziare un brano, premi 'M'. Per accedere al profilo, premi 'P'. Per uscire, premi 'Q'.");
+            char choice = Console.ReadKey().KeyChar;
+
+            if (choice == 'Q' || choice == 'q')
+            {
+                Console.WriteLine("\nGrazie per aver utilizzato la nostra app. Arrivederci!");
+                break;
+            }
+
+            if (choice == 'M' || choice == 'm')
+            {
+                DisplayMusicMenu();
+            }
+            else if (choice == 'P' || choice == 'p')
+            {
+                // Se l'utente non ha ancora un profilo, crea uno nuovo
+                if (userProfile == null)
+                {
+                    Console.WriteLine("\nCrea il tuo profilo. Inserisci un username:");
+                    string username = Console.ReadLine();
+
+                    Console.WriteLine("Scegli il tipo di abbonamento:\n1. Free\n2. Premium\n3. Gold");
+                    char subscriptionChoice = Console.ReadKey().KeyChar;
+                    Console.WriteLine();
+
+                    switch (subscriptionChoice)
+                    {
+                        case '1':
+                            // Abbonamento Free
+                            userProfile = new Profile(username);
+                            userProfile.TotalListeningHours = 100; // Tempo di ascolto massimo per l'abbonamento Free
+                            break;
+
+                        case '2':
+                            // Abbonamento Premium
+                            userProfile = new Profile(username);
+                            userProfile.TotalListeningHours = 1000; // Tempo di ascolto massimo per l'abbonamento Premium
+                            break;
+
+                        case '3':
+                            // Abbonamento Gold
+                            userProfile = new Profile(username);
+                            userProfile.TotalListeningHours = int.MaxValue; // Tempo di ascolto illimitato per l'abbonamento Gold
+                            break;
+
+                        default:
+                            Console.WriteLine("Scelta non valida. Uscita...");
+                            Environment.Exit(0);
+                            break;
+                    }
+                }
+
+                // Esegui la logica del profilo
+                RunProfile();
+            }
+            else
+            {
+                Console.WriteLine("\nScelta non valida. Riprova.");
+            }
+        }
+    }
+
+    private void RunProfile()
+    {
+        Console.WriteLine($"Benvenuto nel profilo di {userProfile.Username}!");
+
+        // Aggiunta: Seleziona la lingua durante il login
+        Console.WriteLine("Seleziona la lingua:\n1. Italiano\n2. English");
+        char languageChoice = Console.ReadKey().KeyChar;
+        Console.WriteLine();
+
+        switch (languageChoice)
+        {
+            case '1':
+                // Imposta la lingua su Italiano
+                Console.WriteLine("Lingua impostata su Italiano.");
+                break;
+
+            case '2':
+                // Imposta la lingua su Inglese (English)
+                Console.WriteLine("Language set to English.");
+                break;
+
+            default:
+                Console.WriteLine("Lingua non valida. Utilizzerà la lingua predefinita.");
+                break;
+        }
+
+        // Aggiunta: Visualizza il tempo totale di ascolto
+        Console.WriteLine($"Tempo totale di ascolto: {userProfile.TotalListeningHours} ore.");
+
+        // Implementa qui la logica del profilo, ad esempio la visualizzazione delle informazioni dell'utente, playlist personalizzate, ecc.
+        Console.WriteLine("Questa è la sezione del profilo. Implementa la logica del profilo qui.");
+
+        // Dopo aver completato la logica del profilo, torna al menu principale
+        Console.WriteLine("\nPremi 'M' per tornare al menu principale o 'Q' per uscire.");
+        char choice = Console.ReadKey().KeyChar;
+
+        if (choice == 'M' || choice == 'm')
+        {
+            // Torna al menu principale
+            return;
+        }
+        else if (choice == 'Q' || choice == 'q')
+        {
+            // Esci dall'app
+            Environment.Exit(0);
+        }
+        else
+        {
+            Console.WriteLine("\nScelta non valida. Uscita...");
+        }
+    }
+
     private List<Artist> artists;
     private List<Playlist> playlists;
 
@@ -86,31 +226,7 @@ class MusicApp
         }
     }
 
-    public void Run()
-    {
-        Console.WriteLine("Benvenuto su Spotify-like Console App!");
-
-        while (true)
-        {
-            Console.WriteLine("\nPer iniziare un brano, premi 'M'. Per uscire, premi 'Q'.");
-            char choice = Console.ReadKey().KeyChar;
-
-            if (choice == 'Q' || choice == 'q')
-            {
-                Console.WriteLine("\nGrazie per aver utilizzato la nostra app. Arrivederci!");
-                break;
-            }
-
-            if (choice == 'M' || choice == 'm')
-            {
-                DisplayMusicMenu();
-            }
-            else
-            {
-                Console.WriteLine("\nScelta non valida. Riprova.");
-            }
-        }
-    }
+    
 
     private Album GetAlbumByIndex(int index)
     {
