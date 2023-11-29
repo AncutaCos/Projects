@@ -19,15 +19,33 @@ class Profile
     public string Username { get; set; }
     public List<Playlist> Playlists { get; set; }
     public int TotalListeningHours { get; set; }
+    public DateTime LastSongPlayedTime { get; set; }
 
     public Profile(string username)
     {
         Username = username;
         Playlists = new List<Playlist>();
         TotalListeningHours = 0;
+        LastSongPlayedTime = DateTime.MinValue;
     }
 
+    public void UpdateLastSongPlayedTime()
+    {
+        LastSongPlayedTime = DateTime.UtcNow;
+    }
+    public void DisplayLastSongPlayedTime()
+    {
+        if (LastSongPlayedTime != DateTime.MinValue)
+        {
+            Console.WriteLine($"Ultimo brano riprodotto il: {LastSongPlayedTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")}");
+        }
+        else
+        {
+            Console.WriteLine("Nessun brano è stato riprodotto ancora.");
+        }
+    }
 }
+
 
 
 class MusicApp
@@ -130,6 +148,8 @@ class MusicApp
 
         // Aggiunta: Visualizza il tempo totale di ascolto
         Console.WriteLine($"Tempo totale di ascolto: {userProfile.TotalListeningHours} ore.");
+        // Visualizza l'orario dell'ultimo brano riprodotto
+        userProfile.DisplayLastSongPlayedTime();
 
         // Implementa qui la logica del profilo, ad esempio la visualizzazione delle informazioni dell'utente, playlist personalizzate, ecc.
         Console.WriteLine("Questa è la sezione del profilo. Implementa la logica del profilo qui.");
@@ -159,7 +179,7 @@ class MusicApp
 
     public MusicApp()
     {
-        
+
         // Inizializzazione degli artisti e delle loro canzoni
         artists = new List<Artist>
 {
@@ -226,7 +246,7 @@ class MusicApp
         }
     }
 
-    
+
 
     private Album GetAlbumByIndex(int index)
     {
@@ -569,13 +589,14 @@ class MusicApp
         while (true)
         {
             char key = Console.ReadKey().KeyChar;
-            Console.WriteLine();  
+            Console.WriteLine();
 
             switch (key)
             {
                 case 'P':
                 case 'p':
                     player.Start(songs);  // Riavvia la riproduzione
+                    userProfile.UpdateLastSongPlayedTime(); // Aggiorna l'orario dell'ultimo brano riprodotto
                     break;
 
                 case 'S':
@@ -586,11 +607,13 @@ class MusicApp
                 case 'N':
                 case 'n':
                     player.Next(songs);
+                    userProfile.UpdateLastSongPlayedTime(); // Aggiorna l'orario dell'ultimo brano riprodotto
                     break;
 
                 case 'B':
                 case 'b':
                     player.Previous(songs);
+                    userProfile.UpdateLastSongPlayedTime(); // Aggiorna l'orario dell'ultimo brano riprodotto
                     break;
 
                 case 'E':
@@ -601,15 +624,15 @@ class MusicApp
                     Console.WriteLine("Tasto non valido. Riprova.");
                     break;
             }
-
         }
     }
+
 }
 
 class Artist
 {
     public string Name { get; set; }
-    public string Genre { get; set; } 
+    public string Genre { get; set; }
     public List<Album> Albums { get; set; }
 
     public Artist(string name, string genre, List<Album> albums)
@@ -711,4 +734,3 @@ class MediaPlayer
     }
 
 }
-
